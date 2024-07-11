@@ -1,7 +1,7 @@
 {
   "name": "my-to-do-project",
   "version": "0.0.0",
-  "private": false,
+  "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite",
