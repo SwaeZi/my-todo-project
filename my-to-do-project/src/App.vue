@@ -4,34 +4,68 @@ It manages user authentication states, displays navigation links conditionally b
 -->
 
 <template>
-  <header>
-    <div class="wrapper">
-      <!-- Display a welcome message using the HelloWorld component -->
-      <HelloWorld msg="Final Boiler Plate" />
-
-      <!-- Navigation links -->
-      <nav>
-        <template v-if="!isLoggedIn">
-          <!-- If the user is not logged in, show these links -->
-          <RouterLink to="/auth/login">Login</RouterLink>
-          <RouterLink to="/auth/register">Register</RouterLink>
-        </template>
-        <template v-else>
-          <!-- If the user is logged in, show these links -->
-          <RouterLink to="/">Home</RouterLink>
-          <RouterLink to="/about">About</RouterLink>
-          <RouterLink to="/all-tasks">All Tasks</RouterLink>
-          <RouterLink to="/completed-tasks">Completed Tasks</RouterLink>
-          <RouterLink to="/add-task">Add New Task</RouterLink>
-          <button @click="handleSignOut">Sign Out</button>
-        </template>
-      </nav>
+  <div>
+    <!-- Brand/logo centered at the top -->
+    <div class="container py-4 text-center">
+      <h1 class="mb-4 text-success display-5">Ironhack To-Do-App</h1>
     </div>
-  </header>
 
-  <!-- RouterView to display the current route's component -->
-  <RouterView />
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <div class="container">
+        <!-- Toggle button for small screens -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="background-color: aliceblue;">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navigation links aligned to the center -->
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+          <ul class="navbar-nav">
+            <!-- Conditional rendering based on user login status -->
+            <template v-if="!isLoggedIn">
+              <!-- If the user is not logged in, show these links -->
+              <li class="nav-item">
+                <RouterLink class="nav-link text-white" to="/auth/login">Login</RouterLink>
+              </li>
+              <li class="nav-item">
+                <RouterLink class="nav-link text-primary" to="/auth/register">Register</RouterLink>
+              </li>
+            </template>
+            <template v-else>
+              <!-- If the user is logged in, show these links -->
+              <li class="nav-item ">
+                <RouterLink class="nav-link text-white" to="/">Home</RouterLink>
+              </li>
+              <li class="nav-item">
+                <RouterLink class="nav-link text-white" to="/about">About</RouterLink>
+              </li>
+              <li class="nav-item">
+                <RouterLink class="nav-link text-white" to="/all-tasks">All Tasks</RouterLink>
+              </li>
+              <li class="nav-item">
+                <RouterLink class="nav-link text-white" to="/completed-tasks">Completed Tasks</RouterLink>
+              </li>
+              <li class="nav-item">
+                <RouterLink class="nav-link text-white" to="/add-task">Add New Task</RouterLink>
+              </li>
+            </template>
+          </ul>
+        </div>
+
+        <!-- Logout button aligned to the right -->
+        <template v-if="isLoggedIn">
+          <button class="btn btn-outline-danger ms-auto" @click="handleSignOut">Sign Out</button>
+        </template>
+      </div>
+    </nav>
+
+    <!-- RouterView to display the current route's component -->
+    <RouterView />
+  </div>
 </template>
+
+
 
 <script setup>
 // ------------------------------------------------------------------------
@@ -122,67 +156,3 @@ In order to extract properties from the store while keeping its reactivity, you 
 Link: https://pinia.vuejs.org/core-concepts/
 -->
 
-
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
-</style>

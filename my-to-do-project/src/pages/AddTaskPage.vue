@@ -4,46 +4,56 @@ By building this component, we will achieve a user interface that allows users t
 -->
 
 <template>
-    <div>
-        <h1>Add New Task</h1>
-        <!-- v-if directive to show success message if taskAdded is true, otherwise show the form -->
-        <div v-if="taskAdded">
-            <p>Yay! New task created.</p>
-            <button @click="startNewTask">Start a New Task</button>
-        </div>
-        <div v-else>
-            <form @submit.prevent="handleSubmit">
-                <div>
-                    <label for="title">Title:</label>
-                    <input v-model="newTask.title" type="text" id="title" required />
+    <div class="container">
+        <div class="card shadow-sm p-4">
+            <h1 class="mb-4">Add New Task</h1>
+
+            <!-- Success Message -->
+            <div v-if="taskAdded" class="alert alert-success">
+                <p>Yay! New task created.</p>
+                <button @click="startNewTask" class="btn btn-primary">Start a New Task</button>
+            </div>
+
+            <!-- Form to Add Task -->
+            <form v-else @submit.prevent="handleSubmit">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title:</label>
+                    <input v-model="newTask.title" type="text" id="title" class="form-control" required />
                 </div>
-                <div>
-                    <label for="descriptionTitle">Description Title:</label>
-                    <input v-model="newTask.description.title" type="text" id="descriptionTitle" required />
-                </div>
-                <div>
-                    <label for="timeToBeCompleted">Time to be Completed:</label>
-                    <input v-model="newTask.description.timeToBeCompleted" type="text" id="timeToBeCompleted"
+
+                <div class="mb-3">
+                    <label for="descriptionTitle" class="form-label">Description Title:</label>
+                    <input v-model="newTask.description.title" type="text" id="descriptionTitle" class="form-control"
                         required />
                 </div>
-                <div>
-                    <label for="extraInfo">Extra Info Required:</label>
-                    <input v-model="newExtraInfo" type="text" id="extraInfo" />
-                    <button type="button" @click="addExtraInfo">Add Info</button>
-                    <ul>
+
+                <div class="mb-3">
+                    <label for="timeToBeCompleted" class="form-label">Time to be Completed:</label>
+                    <input v-model="newTask.description.timeToBeCompleted" type="text" id="timeToBeCompleted"
+                        class="form-control" required />
+                </div>
+
+                <div class="mb-3">
+                    <label for="extraInfo" class="form-label">Extra Info Required:</label>
+                    <div class="input-group">
+                        <input v-model="newExtraInfo" type="text" id="extraInfo" class="form-control" />
+                        <button type="button" class="btn btn-outline-secondary" @click="addExtraInfo">Add Info</button>
+                    </div>
+                    <ul class="list-unstyled mt-2">
                         <li v-for="(info, index) in newTask.description.extraInfoRequired" :key="index">
                             {{ info }}
-                            <button type="button" @click="removeExtraInfo(index)">
-                                Remove
-                            </button>
+                            <button type="button" class="btn btn-sm btn-danger ms-2"
+                                @click="removeExtraInfo(index)">Remove</button>
                         </li>
                     </ul>
                 </div>
-                <button type="submit">Add Task</button>
+
+                <button type="submit" class="btn btn-primary">Add Task</button>
             </form>
         </div>
     </div>
 </template>
+
 
 <script setup>
 // ------------------------------------------------------------------------

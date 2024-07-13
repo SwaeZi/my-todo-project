@@ -2,19 +2,30 @@
 This file defines the Home View component of a Vue.js application.
 It demonstrates how to consume and display data from a Pinia store, and how to call store functions.
 -->
-
 <template>
     <main class="container">
-        <h4>Home View</h4>
+        <section class="my-5">
+            <h2 class="text-center mb-4">Welcome to the Home View</h2>
 
-        <!-- First way of consuming data from the store -->
-        <!-- Even though it is accessible, this can be hard to read, so get used to reading -->
-        <p>{{ useCounterStore().count }}</p>
+            <!-- Displaying Data from the Store -->
+            <div class="text-center">
+                <h4>Current Count: {{ countNumber }}</h4>
+                <h5>Doubled Count: {{ doubleCountNumber }}</h5>
+            </div>
 
-        <!-- Using 2nd way -->
-        <p>{{ countNumber }}</p>
-        <p>{{ doubleCountNumber }}</p>
-        <button @click="incrementNumberFunctionFromStore">Add +1</button>
+            <!-- Button to Increment Count -->
+            <div class="text-center mt-4">
+                <button @click="incrementNumberFunctionFromStore" class="btn btn-primary">Add +1</button>
+            </div>
+        </section>
+
+        <!-- Personal Note -->
+        <section class="mt-5">
+            <h3 class="text-center mb-2">A Personal Note</h3>
+            <p class="lead text-center">
+                Welcome to Home View!
+            </p>
+        </section>
     </main>
 </template>
 
@@ -65,3 +76,11 @@ console.log(userStore.getTasksForUser());
   - This function is called when the button in the template is clicked.
   */
 </script>
+
+<style scoped>
+h2,h3,h4,h5,p {
+    color: white;
+}
+
+
+</style>

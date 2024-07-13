@@ -1,35 +1,46 @@
 <template>
     <div class="container">
-        <h3 class="header-title">Log In to ToDo App</h3>
-        <!-- FORM GOES HERE -->
-        <form @submit.prevent="signIn">
-            <div class="form">
-                <!-- Email Input -->
-                <label>Email
-                    <input id="email" type="text" v-model="formState.email" />
-                </label>
-                <!-- Password Input -->
-                <label>Password
-                    <input id="password" type="password" v-model="formState.password" />
-                </label>
-                <!-- Button -->
-                <!-- I personally like semantic elements, I think they are easier to read as an engineer -->
-                <button type="submit">Log In</button>
-            </div>
-        </form>
-        <!-- END FORM -->
-        <!-- Error Message Here -->
-        <p v-show="formState.errorMsg">{{ formState.errorMsg }}</p>
-        <!-- END Error Message -->
 
-        <p>
+
+        <!-- Sign In Form -->
+        <form @submit.prevent="signIn" class="w-75 mx-auto">
+            <div class="form-group">
+                <!-- Email Input -->
+                <label class="text-white" for="email">Email address</label>
+                <input type="email" class="form-control" id="email" placeholder="Enter email" v-model="formState.email"
+                    required />
+            </div>
+
+            <div class="form-group">
+                <!-- Password Input -->
+                <label class="text-white" for="password">Password</label>
+                <div class="input-group">
+                    <input type="password" class="form-control" id="password" placeholder="Enter password"
+                        v-model="formState.password" required />
+
+                </div>
+            </div>
+
+            <!-- Sign In Button -->
+            <button type="submit" class="btn btn-primary btn-lg btn-block mb-3">Sign In</button>
+        </form>
+        <!-- End Sign In Form -->
+
+        <!-- Error Message -->
+        <p v-if="formState.errorMsg" class="text-danger">{{ formState.errorMsg }}</p>
+        <!-- End Error Message -->
+
+        <!-- Sign Up Link -->
+        <p class="text-center text-white">
             Don't have an account?
-            <PersonalRouter :route="route" :buttonText="buttonText" class="sign-up-link" />
+            <PersonalRouter :route="route" :buttonText="buttonText" class="sign-up-link text-primary display-7" />
         </p>
+        <!-- End Sign Up Link -->
     </div>
 </template>
 
 <script setup>
+
 // ------------------------------------------------------------------------
 // Import Block
 // ------------------------------------------------------------------------
@@ -100,6 +111,11 @@ let signIn = () => {
 </script>
 
 <style scoped>
+form i {
+    margin-left: -30px;
+    cursor: pointer;
+}
+
 label,
 input {
     display: block;

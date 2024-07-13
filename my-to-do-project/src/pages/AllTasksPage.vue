@@ -3,39 +3,40 @@ This file defines a Vue.js component for displaying and managing tasks in a to-d
 By building this component, we will achieve a user interface that shows a list of all tasks,
 allowing users to mark tasks as completed and delete them, leveraging global state management with Pinia.js.
 -->
-
 <template>
-    <h4>This Page Displays all tasks</h4>
-
     <div class="container">
-        <!-- Loop through the tasks array and render each task in a list item -->
-        <ul>
-            <!-- v-for directive to iterate over each task in tasks array -->
-            <li v-for="task in tasks" v-bind:key="task.id">
-                <!-- Display the title of the task -->
-                <h5>{{ task.title }}</h5>
-                <!-- Display the description title of the task -->
-                <h6>{{ task.description.title }}</h6>
-                <!-- Display the time to be completed of the task -->
-                <h6>{{ task.description.timeToBeCompleted }}</h6>
-                <!-- Loop through the extraInfoRequired array and render each item in a list item -->
-                <ul>
-                    <li v-for="(extraInfo, index) in task.description.extraInfoRequired" v-bind:key="index">
-                        {{ extraInfo }}
-                    </li>
-                </ul>
-                <!-- Display whether the task is completed or incomplete -->
-                <h6>{{ task.isCompleted ? "Completed" : "Incomplete" }}</h6>
-                <!-- Button to mark the task as completed -->
-                <button v-bind:disabled="task.isCompleted ? true : false" @click="markTaskCompleted(task.id)">
-                    Mark as Completed
-                </button>
-                <!-- Button to delete the task -->
-                <button @click="deleteTask(task.id)">Delete Task</button>
+        <h2 class="text-center text-white mb-4">Task List</h2>
+
+        <ul class="list-group">
+            <li v-for="task in tasks" :key="task.id" class="list-group-item mb-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h4 class="mb-1">{{ task.title }}</h4>
+                        <p class="mb-1">{{ task.description.title }}</p>
+                        <p class="mb-1"><strong>Time to Complete:</strong> {{ task.description.timeToBeCompleted }}</p>
+                        <ul class="list-unstyled mb-2">
+                            <li v-for="(extraInfo, index) in task.description.extraInfoRequired" :key="index">{{
+                                extraInfo }}</li>
+                        </ul>
+                        <p v-if="task.isCompleted" class="text-success mb-1">Status: Completed</p>
+                        <p v-else class="text-danger mb-1">Status: Incomplete</p>
+                    </div>
+
+                    <div class="btn-group">
+                        <button v-if="!task.isCompleted" @click="markTaskCompleted(task.id)"
+                            class="btn btn-success btn-sm">Mark as Completed</button>
+                        <button @click="deleteTask(task.id)" class="btn btn-danger btn-sm">Delete</button>
+                    </div>
+                </div>
             </li>
         </ul>
+
+        <div v-if="tasks.length === 0" class="text-center mt-3">
+            <p>No tasks found.</p>
+        </div>
     </div>
 </template>
+
 
 <script setup>
 // ------------------------------------------------------------------------
@@ -63,9 +64,13 @@ const { tasks, deleteTask, markTaskCompleted } = taskstore; // Destructure neces
 </script>
 
 <style scoped>
-button {
-    display: block;
-    margin-bottom: 0.5rem;
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.btn-group button {
+    margin-right: 10px;
 }
 </style>
 

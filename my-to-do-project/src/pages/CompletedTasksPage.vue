@@ -2,29 +2,35 @@
 This file defines a Vue.js component for displaying completed tasks in a to-do application.
 By building this component, we will achieve a user interface that shows a list of tasks marked as completed, leveraging global state management with Pinia.js.
 -->
-
 <template>
-    <h4>This Page Displays completed tasks</h4>
     <div class="container">
-        <ul>
-            <!-- Loop through the completedTasks array and render each task -->
-            <li v-for="task in completedTasks" v-bind:key="task.id">
-                <!-- Display the title of the task -->
-                <h5>{{ task.title }}</h5>
-                <!-- Display the description title of the task -->
-                <h6>{{ task.description.title }}</h6>
-                <!-- Display the time to be completed of the task -->
-                <h6>{{ task.description.timeToBeCompleted }}</h6>
-                <!-- Loop through the extraInfoRequired array and render each item in a list item -->
-                <ul>
-                    <li v-for="(extraInfo, index) in task.description.extraInfoRequired" v-bind:key="index">
-                        {{ extraInfo }}
-                    </li>
-                </ul>
-            </li>
-        </ul>
+        <h4 class="mb-4 text-center text-success display-5">Completed Tasks</h4>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow">
+                    <ul class="list-group list-group-flush">
+                        <li v-for="task in completedTasks" :key="task.id" class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between align-items-center mb-3">
+                                <h5 class="mb-1">{{ task.title }}</h5>
+                                <span class="badge bg-success">{{ task.isCompleted ? 'Completed' : 'Incomplete'
+                                    }}</span>
+                            </div>
+                            <p class="mb-1"><strong>Description:</strong> {{ task.description.title }}</p>
+                            <p class="mb-1"><strong>Time to Complete:</strong> {{ task.description.timeToBeCompleted }}
+                            </p>
+                            <ul class="list-unstyled mb-0">
+                                <li v-for="(extraInfo, index) in task.description.extraInfoRequired" :key="index">{{
+                                    extraInfo }}</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
+
 
 <script setup>
 // ------------------------------------------------------------------------
