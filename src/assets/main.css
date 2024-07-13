@@ -1,13 +1,17 @@
 @import "./base.css";
 
+body {
+    background-image: url('../src/assets/bg1.jpg');
+      background-size: cover;
+      background-position: center;
+}
+
 #app {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   font-weight: normal;
-  background-image: url('../src/assets/bg1.jpg');
-    background-size: cover;
-    background-position: center;
+
 }
 
 a,
