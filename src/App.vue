@@ -1,85 +1,158 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
+<!-- 
+This file defines a Vue.js component for the header of a to-do application.
+It manages user authentication states, displays navigation links conditionally based on the user's login status, and includes functionality to log out users.
+-->
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
+  <div>
+    <!-- Brand/logo centered at the top -->
+    <div class="container py-4 text-center">
+      <h1 class="mb-4 text-success display-5">Ironhack To-Do-App</h1>
     </div>
-  </header>
 
-  <RouterView />
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <div class="container">
+        <!-- Toggle button for small screens -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="background-color: aliceblue;">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navigation links aligned to the center -->
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+          <ul class="navbar-nav">
+            <!-- Conditional rendering based on user login status -->
+            <template v-if="!isLoggedIn">
+              <!-- If the user is not logged in, show these links -->
+              <li class="nav-item">
+                <RouterLink class="nav-link text-white" to="/auth/login">Login</RouterLink>
+              </li>
+              <li class="nav-item">
+                <RouterLink class="nav-link text-primary" to="/auth/register">Register</RouterLink>
+              </li>
+            </template>
+            <template v-else>
+              <!-- If the user is logged in, show these links -->
+              <li class="nav-item ">
+                <RouterLink class="nav-link text-white" to="/">Home</RouterLink>
+              </li>
+              <li class="nav-item">
+                <RouterLink class="nav-link text-white" to="/about">About</RouterLink>
+              </li>
+              <li class="nav-item">
+                <RouterLink class="nav-link text-white" to="/all-tasks">All Tasks</RouterLink>
+              </li>
+              <li class="nav-item">
+                <RouterLink class="nav-link text-white" to="/completed-tasks">Completed Tasks</RouterLink>
+              </li>
+              <li class="nav-item">
+                <RouterLink class="nav-link text-white" to="/add-task">Add New Task</RouterLink>
+              </li>
+            </template>
+          </ul>
+        </div>
+
+        <!-- Logout button aligned to the right -->
+        <template v-if="isLoggedIn">
+          <button class="btn btn-outline-danger ms-auto" @click="handleSignOut">Sign Out</button>
+        </template>
+      </div>
+    </nav>
+
+    <!-- RouterView to display the current route's component -->
+    <RouterView />
+  </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
+<script setup>
+// ------------------------------------------------------------------------
+// Import Block
+// ------------------------------------------------------------------------
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
+// Import the HelloWorld component
+import HelloWorld from "./components/HelloWorld.vue";
+// Import ref, onMounted, and onBeforeMount from Vue
+import { ref, onMounted, onBeforeMount } from "vue";
+// Import storeToRefs from Pinia to keep reactivity
+import { storeToRefs } from "pinia";
+// Import useRouter from vue-router for navigation
+import { useRouter } from "vue-router";
+// Import useUserStore to access user-related data
+import { useUserStore } from "../src/stores/user";
 
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
+// ------------------------------------------------------------------------
+// Variable Definition Block
+// ------------------------------------------------------------------------
 
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
+// Router instance for navigation
+const router = useRouter();
+// Store user accessed easily here
+const userStore = useUserStore();
+// Destructure the variable 'user' and 'isLoggedIn' out of the store, keeping their reactivity using storeToRefs
+const { user, isLoggedIn } = storeToRefs(userStore);
+// Reactive variable to hide/show elements based on user login status
+const isUserloggedIn = ref(false);
 
-nav a:first-of-type {
-  border: 0;
-}
+// ------------------------------------------------------------------------
+// Lifecycle Hook: onMounted
+// ------------------------------------------------------------------------
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+// Using the onMounted lifecycle hook to perform actions when the component is mounted
+onMounted(() => {
+  console.log("hello calling function");
+  try {
+    // Fetch the user data from the store
+    userStore.fetchUser();
+    // Check if the user is stored in localStorage
+    if (!user.value) {
+      // If no user is found, redirect to login page
+      router.push({ path: "/auth/login" });
+    } else {
+      // If user is found, update the reactive variable and redirect to home
+      isUserloggedIn.value = true;
+      router.push({ path: "/" });
+    }
+  } catch (error) {
+    console.log(error);
   }
+});
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
+// ------------------------------------------------------------------------
+// Function to Sign Out User
+// ------------------------------------------------------------------------
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+/**
+ * Signs out the user and redirects to the login page.
+ */
+let handleSignOut = () => {
+  // Call the signOut function from the user store
+  userStore.signOut();
+  // Redirect to login page
+  router.push({ path: "/auth/login" });
+  // Update the reactive variable to false
+  isUserloggedIn.value = false;
+};
 
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
+/*
+  The handleSignOut function is used to log out the current user.
+  - It calls the signOut function from the user store to clear user data.
+  - It redirects the user to the login page.
+  - It updates the isUserloggedIn reactive variable to false.
+  */
 
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
-</style>
+// ------------------------------------------------------------------------
+// Additional Lifecycle Hooks (Placeholder for onBeforeMount, onUpdated)
+// ------------------------------------------------------------------------
+
+// Additional lifecycle hooks such as onBeforeMount and onUpdated can be added here if needed.
+</script>
+
+<!-- 
+What is storeToRefs?
+In order to extract properties from the store while keeping its reactivity, you need to use storeToRefs(). It will create refs for every reactive property. This is useful when you are only using state from the store but not calling any action. Note you can destructure actions directly from the store as they are bound to the store itself too.
+Link: https://pinia.vuejs.org/core-concepts/
+-->
+
