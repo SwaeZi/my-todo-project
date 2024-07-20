@@ -5,17 +5,51 @@ It demonstrates how to consume and display data from a Pinia store, and how to c
 <template>
     <main class="container">
         <section class="my-5">
-            <h2 class="text-center mb-4">Welcome to the Home View</h2>
+            <h2 class="text-center mb-4">Task List</h2>
 
-            <!-- Displaying Data from the Store -->
-            <div class="text-center">
-                <h4>Current Count: {{ countNumber }}</h4>
-                <h5>Doubled Count: {{ doubleCountNumber }}</h5>
-            </div>
+            <!-- Displaying Tasks from the Store -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="list-group">
+                        <li v-for="task in tasks" :key="task.id" class="list-group-item mb-3">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h4 class="mb-1">{{ task.title }}</h4>
+                                    <p class="mb-1"><strong>Description:</strong> {{ task.description.title }}</p>
+                                    <p class="mb-1"><strong>Date to Complete:</strong>
+                                        <span class="badge bg-primary">{{ task.description.dateToBeCompleted }}</span>
+                                    </p>
+                                    <p class="mb-1"><strong>Month to Complete:</strong>
+                                        <span class="badge bg-secondary">{{ task.description.monthToBeCompleted
+                                            }}</span>
+                                    </p>
+                                    <p class="mb-1"><strong>Time to Complete:</strong>
+                                        <span class="badge bg-info">{{ task.description.timeToBeCompleted }}</span>
+                                    </p>
+                                    <p class="mb-1"><strong>Priority:</strong>
+                                        <span :class="priorityBadgeClass(task.description.priority)" class="badge">{{
+                                            task.description.priority }}</span>
+                                    </p>
+                                    <ul class="list-unstyled mb-2">
+                                        <li v-for="(extraInfo, index) in task.description.extraInfoRequired"
+                                            :key="index">{{ extraInfo }}</li>
+                                    </ul>
+                                    <p v-if="task.isCompleted" class="text-success mb-1">Status: Completed</p>
+                                    <p v-else class="text-danger mb-1">Status: Incomplete</p>
+                                </div>
 
-            <!-- Button to Increment Count -->
-            <div class="text-center mt-4">
-                <button @click="incrementNumberFunctionFromStore" class="btn btn-primary">Add +1</button>
+                                <div class="btn-group">
+                                    <button @click="toggleTaskCompletion(task)" class="btn btn-sm"
+                                        :class="task.isCompleted ? 'btn-secondary' : 'btn-success'">
+                                        {{ task.isCompleted ? 'Undo Completion' : 'Mark as Completed' }}
+                                    </button>
+                                    <button @click="editTask(task)" class="btn btn-warning btn-sm">Edit Task</button>
+                                    <button @click="deleteTask(task.id)" class="btn btn-danger btn-sm">Delete</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </section>
 
@@ -23,7 +57,7 @@ It demonstrates how to consume and display data from a Pinia store, and how to c
         <section class="mt-5">
             <h3 class="text-center mb-2">A Personal Note</h3>
             <p class="lead text-center">
-                Welcome to Home View!
+                Welcome to the Task Management System!
             </p>
         </section>
     </main>

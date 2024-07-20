@@ -2,7 +2,6 @@
 This file defines a Vue.js component for adding a new task to a to-do application.
 By building this component, we will achieve a user interface that allows users to input details for a new task and add it to the global state managed by Pinia.js.
 -->
-
 <template>
     <div class="container">
         <div class="card shadow-sm p-4">
@@ -28,9 +27,31 @@ By building this component, we will achieve a user interface that allows users t
                 </div>
 
                 <div class="mb-3">
-                    <label for="timeToBeCompleted" class="form-label">Time to be Completed:</label>
-                    <input v-model="newTask.description.timeToBeCompleted" type="text" id="timeToBeCompleted"
+                    <label for="dateToBeCompleted" class="form-label">Date to be Completed:</label>
+                    <input v-model="newTask.description.dateToBeCompleted" type="date" id="dateToBeCompleted"
                         class="form-control" required />
+                </div>
+
+                <div class="mb-3">
+                    <label for="monthToBeCompleted" class="form-label">Month to be Completed:</label>
+                    <input v-model="newTask.description.monthToBeCompleted" type="month" id="monthToBeCompleted"
+                        class="form-control" required />
+                </div>
+
+                <div class="mb-3">
+                    <label for="timeToBeCompleted" class="form-label">Time to be Completed:</label>
+                    <input v-model="newTask.description.timeToBeCompleted" type="time" id="timeToBeCompleted"
+                        class="form-control" required />
+                </div>
+
+                <div class="mb-3">
+                    <label for="priority" class="form-label">Priority:</label>
+                    <select v-model="newTask.description.priority" id="priority" class="form-select" required>
+                        <option value="" disabled>Select priority</option>
+                        <option value="light">Light</option>
+                        <option value="moderate">Moderate</option>
+                        <option value="high">High</option>
+                    </select>
                 </div>
 
                 <div class="mb-3">
@@ -53,6 +74,7 @@ By building this component, we will achieve a user interface that allows users t
         </div>
     </div>
 </template>
+
 
 
 <script setup>
