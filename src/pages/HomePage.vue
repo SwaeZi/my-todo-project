@@ -123,4 +123,15 @@ p {
 .card-body {
     padding: 2rem;
 }
+
+@media (max-width: 768px) {
+    .btn-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-group .btn {
+        margin-bottom: 0.5rem;
+    }
+}
 </style>
